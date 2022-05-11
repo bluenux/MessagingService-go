@@ -39,3 +39,20 @@ func SendMessage(service message.Service) fiber.Handler {
 		return ctx.SendString("Hello World!")
 	}
 }
+
+func RegistryDevice(service message.Service) fiber.Handler {
+	return func(ctx *fiber.Ctx) error {
+
+		deviceToken := ctx.FormValue("token")
+		log.Printf("device token : %v\n", deviceToken)
+		if len(deviceToken) == 0 {
+			//log.Println("error", err)
+			_ = ctx.SendStatus(fiber.StatusBadRequest)
+			return ctx.SendString("ERROR!")
+		}
+
+		service.RegistryDevice(deviceToken)
+		return ctx.SendString("OK!!")
+	}
+
+}

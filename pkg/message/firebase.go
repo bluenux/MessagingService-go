@@ -3,15 +3,13 @@ package message
 import (
 	"context"
 	"firebase.google.com/go/v4/messaging"
-	"fmt"
 	"log"
 )
 
-func SendToToken(client *messaging.Client, title string, body string) {
+func SendToToken(client *messaging.Client, token string, title string, body string) {
 
 	// This registration token comes from the client FCM SDKs.
-	// TODO : dynamic token
-	registrationToken := "token"
+	registrationToken := token
 
 	// See documentation on defining a message payload.
 	message := &messaging.Message{
@@ -28,14 +26,15 @@ func SendToToken(client *messaging.Client, title string, body string) {
 			Priority: "high",
 		},
 	}
-	fmt.Println("request payload : ", message)
+	log.Printf("request payload : %v\n", message)
 
 	// Send a message to the device corresponding to the provided
 	// registration token.
 	response, err := client.Send(context.Background(), message)
 	if err != nil {
-		log.Fatalln(err)
+		log.Println(err)
+		return
 	}
 	// Response is a message ID string.
-	fmt.Println("Successfully sent message:", response)
+	log.Printf("Successfully sent message: %v\n", response)
 }

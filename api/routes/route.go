@@ -10,4 +10,5 @@ import (
 func MessageRouter(app fiber.Router, service message.Service) {
 	app.Use("/websocket", handlers.GetMessage(service))
 	app.Post("/message", handlers.SendMessage(service))
+	app.Post("/registry", handlers.RegistryDevice(service))
 }
