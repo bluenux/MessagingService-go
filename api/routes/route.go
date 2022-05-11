@@ -8,6 +8,6 @@ import (
 
 // MessageRouter is the Router for GoFiber App
 func MessageRouter(app fiber.Router, service message.Service) {
-	app.Use("/message", handlers.GetMessage(service))
+	app.Use("/websocket", handlers.GetMessage(service))
 	app.Post("/message", handlers.SendMessage(service))
 }
