@@ -11,7 +11,7 @@ import (
 type Service interface {
 	GetMessage()
 	SendMessage(payload *entities.Payload)
-	RegistryDevice(token string)
+	RegistryDevice(token string) bool
 }
 
 type service struct {
@@ -30,12 +30,41 @@ func (s service) SendMessage(payload *entities.Payload) {
 		log.Println("no device!!")
 	}
 	for _, element := range s.deviceList {
-		SendToToken(s.client, element, payload.Title, payload.Body)
+		SendToToken(s.client, element, payload)
 	}
 }
 
-func (s *service) RegistryDevice(token string) {
+func (s *service) RegistryDevice(token string) bool {
+	if !s.isNewToken(token) {
+		return false
+	}
+	if !s.isValidToken(token) {
+		return false
+	}
+
 	s.deviceList = append(s.deviceList, token)
+	log.Printf("added token : %v\n", token)
+
+	return true
+}
+
+func (s *service) isNewToken(token string) bool {
+	for _, element := range s.deviceList {
+		if token == element {
+			log.Printf("already registed!! : %v\n", token)
+			return false
+		}
+	}
+	return true
+}
+
+func (s *service) isValidToken(token string) bool {
+	_, err := ValidateToken(s.client, token)
+	if err != nil {
+		log.Printf("invalid token : %v, error : %v\n", token, err)
+		return false
+	}
+	return true
 }
 
 func NewService() Service {

@@ -46,13 +46,19 @@ func RegistryDevice(service message.Service) fiber.Handler {
 		deviceToken := ctx.FormValue("token")
 		log.Printf("device token : %v\n", deviceToken)
 		if len(deviceToken) == 0 {
-			//log.Println("error", err)
-			_ = ctx.SendStatus(fiber.StatusBadRequest)
-			return ctx.SendString("ERROR!")
+			return badRequest(ctx)
 		}
 
-		service.RegistryDevice(deviceToken)
+		result := service.RegistryDevice(deviceToken)
+		if !result {
+			return badRequest(ctx)
+		}
 		return ctx.SendString("OK!!")
 	}
 
+}
+
+func badRequest(ctx *fiber.Ctx) error {
+	_ = ctx.SendStatus(fiber.StatusBadRequest)
+	return ctx.SendString("ERROR!")
 }
