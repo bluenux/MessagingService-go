@@ -1,6 +1,7 @@
 package message
 
 import (
+	"MessagingService/api/store"
 	"MessagingService/pkg/entities"
 	"context"
 	firebase "firebase.google.com/go/v4"
@@ -16,7 +17,7 @@ type Service interface {
 
 type service struct {
 	client     *messaging.Client
-	deviceList []string
+	tokenStore store.TokenStore
 }
 
 func (s service) GetMessage() {
@@ -25,37 +26,27 @@ func (s service) GetMessage() {
 }
 
 func (s service) SendMessage(payload *entities.Payload) {
-	log.Printf("device len : %v\n", len(s.deviceList))
-	if len(s.deviceList) == 0 {
+	allToken := s.tokenStore.All()
+	tokenCount := len(allToken)
+
+	log.Printf("device len : %v\n", tokenCount)
+	if tokenCount == 0 {
 		log.Println("no device!!")
 	}
-	for _, element := range s.deviceList {
+	for _, element := range allToken {
 		SendToToken(s.client, element, payload)
 	}
 }
 
 func (s *service) RegistryDevice(token string) bool {
-	if !s.isNewToken(token) {
-		return false
-	}
 	if !s.isValidToken(token) {
 		return false
 	}
 
-	s.deviceList = append(s.deviceList, token)
-	log.Printf("added token : %v\n", token)
+	success := s.tokenStore.Set(token)
+	log.Printf("token result : %v\n", success)
 
-	return true
-}
-
-func (s *service) isNewToken(token string) bool {
-	for _, element := range s.deviceList {
-		if token == element {
-			log.Printf("already registed!! : %v\n", token)
-			return false
-		}
-	}
-	return true
+	return success
 }
 
 func (s *service) isValidToken(token string) bool {
@@ -79,5 +70,7 @@ func NewService() Service {
 		log.Fatalln(err)
 	}
 
-	return &service{client: client, deviceList: []string{}}
+	tokenStore := store.NewStore()
+
+	return &service{client: client, tokenStore: tokenStore}
 }

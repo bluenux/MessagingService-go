@@ -10,6 +10,8 @@ require (
 	cloud.google.com/go/storage v1.21.0 // indirect
 	firebase.google.com/go/v4 v4.8.0 // indirect
 	github.com/andybalholm/brotli v1.0.4 // indirect
+	github.com/aws/aws-lambda-go v1.19.1 // indirect
+	github.com/awslabs/aws-lambda-go-api-proxy v0.13.2 // indirect
 	github.com/fasthttp/websocket v1.5.0 // indirect
 	github.com/gofiber/fiber/v2 v2.33.0 // indirect
 	github.com/gofiber/websocket/v2 v2.0.21 // indirect
