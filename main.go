@@ -12,10 +12,12 @@ import (
 	"log"
 )
 
-func prepareHTTPServer() *fiber.App {
+var app *fiber.App
+
+func prepareHTTPServer() {
 	log.Println("application init")
 
-	app := fiber.New()
+	app = fiber.New()
 	service := message.NewService()
 
 	app.Get("/", func(c *fiber.Ctx) error {
@@ -23,26 +25,24 @@ func prepareHTTPServer() *fiber.App {
 	})
 
 	routes.MessageRouter(app.Group("/"), service)
-
-	return app
 }
 
 func main() {
 
-	app := prepareHTTPServer()
+	prepareHTTPServer()
 
 	if utility.IsAWSLambda() {
 		startOnAWS()
 	} else {
-		start(app)
+		start()
 	}
 }
 
-func start(app *fiber.App) {
+func start() {
 	_ = app.Listen(":3000")
 }
 
-func lambdaHandler(_ context.Context, req events.APIGatewayProxyRequest, app *fiber.App) (events.APIGatewayProxyResponse, error) {
+func lambdaHandler(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 
 	adapter := fiberadapter.New(app)
 	resp, err := adapter.ProxyWithContext(context.Background(), req)
