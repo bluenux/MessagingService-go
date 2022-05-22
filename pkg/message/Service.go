@@ -40,6 +40,7 @@ func (s service) SendMessage(payload *entities.Payload) {
 
 func (s *service) RegistryDevice(token string) bool {
 	if !s.isValidToken(token) {
+		log.Println("invalid token!")
 		return false
 	}
 
@@ -50,6 +51,7 @@ func (s *service) RegistryDevice(token string) bool {
 }
 
 func (s *service) isValidToken(token string) bool {
+	log.Println("token checking...!")
 	_, err := ValidateToken(s.client, token)
 	if err != nil {
 		log.Printf("invalid token : %v, error : %v\n", token, err)

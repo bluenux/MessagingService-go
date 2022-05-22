@@ -11,6 +11,7 @@ require (
 	firebase.google.com/go/v4 v4.8.0 // indirect
 	github.com/andybalholm/brotli v1.0.4 // indirect
 	github.com/aws/aws-lambda-go v1.19.1 // indirect
+	github.com/aws/aws-sdk-go v1.44.19 // indirect
 	github.com/awslabs/aws-lambda-go-api-proxy v0.13.2 // indirect
 	github.com/fasthttp/websocket v1.5.0 // indirect
 	github.com/gofiber/fiber/v2 v2.33.0 // indirect
@@ -19,6 +20,7 @@ require (
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/go-cmp v0.5.7 // indirect
 	github.com/googleapis/gax-go/v2 v2.1.1 // indirect
+	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/klauspost/compress v1.15.3 // indirect
 	github.com/savsgio/gotils v0.0.0-20220401102855-e56b59f40436 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect

@@ -1,8 +1,8 @@
 package main
 
 import (
+	"MessagingService/api/env"
 	"MessagingService/api/routes"
-	"MessagingService/api/utility"
 	"MessagingService/pkg/message"
 	"context"
 	"github.com/aws/aws-lambda-go/events"
@@ -31,7 +31,7 @@ func main() {
 
 	prepareHTTPServer()
 
-	if utility.IsAWSLambda() {
+	if env.IsAWSLambda() {
 		startOnAWS()
 	} else {
 		start()

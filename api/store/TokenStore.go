@@ -1,7 +1,8 @@
 package store
 
 import (
-	"MessagingService/api/utility"
+	"MessagingService/api/env"
+	"log"
 )
 
 type TokenStore interface {
@@ -22,8 +23,15 @@ func (t tokenStore) All() []string {
 }
 
 func NewStore() TokenStore {
-	if utility.IsAWSLambda() {
-		return &tokenStore{FileStore{}}
+	if env.IsAWSLambda() {
+		log.Println("Using AWS S3 store!")
+		return &tokenStore{S3Store{
+			fileStore:  FileStore{filePath: env.GetTokenStorePath()},
+			region:     env.GetRegion(),
+			bucket:     env.GetBucket(),
+			s3StoreKey: env.GetS3StoreKey(),
+		}}
 	}
-	return &tokenStore{&MemoryStore{}}
+	log.Println("Using File store!")
+	return &tokenStore{FileStore{filePath: env.GetTokenStorePath()}}
 }

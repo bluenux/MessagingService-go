@@ -7,10 +7,11 @@ import (
 )
 
 type FileStore struct {
+	filePath string
 }
 
 func (f FileStore) All() []string {
-	file, err := os.Open("/mnt/data/tokens")
+	file, err := os.Open(f.filePath)
 	if err != nil {
 		log.Printf("error : %v\n", err)
 	}
@@ -36,7 +37,7 @@ func (f FileStore) All() []string {
 func (f FileStore) Set(token string) bool {
 	if f.isNewToken(token) {
 		log.Printf("store token value...")
-		fs, err := os.OpenFile("/mnt/data/tokens", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0666)
+		fs, err := os.OpenFile(f.filePath, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0666)
 		if err != nil {
 			log.Printf("error : %v\n", err)
 		}

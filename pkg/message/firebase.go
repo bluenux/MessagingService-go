@@ -55,6 +55,7 @@ func ValidateToken(client *messaging.Client, token string) (string, error) {
 	// Send a message to the device corresponding to the provided
 	// registration token.
 	response, err := client.SendDryRun(context.Background(), message)
+	log.Printf("response : %v\n", response)
 	if err != nil {
 		log.Println(err)
 		return "", err
