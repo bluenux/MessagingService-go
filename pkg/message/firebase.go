@@ -1,13 +1,12 @@
 package message
 
 import (
-	"MessagingService/pkg/entities"
 	"context"
 	"firebase.google.com/go/v4/messaging"
 	"log"
 )
 
-func SendToToken(client *messaging.Client, token string, payload *entities.Payload) {
+func SendToToken(client *messaging.Client, token string, payload *map[string]string) {
 
 	// This registration token comes from the client FCM SDKs.
 	registrationToken := token
@@ -18,11 +17,7 @@ func SendToToken(client *messaging.Client, token string, payload *entities.Paylo
 			Title: title,
 			Body:  body,
 		},*/
-		Data: map[string]string{
-			"title":     payload.Title,
-			"body":      payload.Body,
-			"channelID": payload.ChannelID,
-		},
+		Data:  *payload,
 		Token: registrationToken,
 		Android: &messaging.AndroidConfig{
 			Priority: "high",

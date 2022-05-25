@@ -2,7 +2,6 @@ package message
 
 import (
 	"MessagingService/api/store"
-	"MessagingService/pkg/entities"
 	"context"
 	firebase "firebase.google.com/go/v4"
 	"firebase.google.com/go/v4/messaging"
@@ -11,7 +10,7 @@ import (
 
 type Service interface {
 	GetMessage()
-	SendMessage(payload *entities.Payload)
+	SendMessage(payload *map[string]string)
 	RegistryDevice(token string) bool
 }
 
@@ -25,7 +24,7 @@ func (s service) GetMessage() {
 	panic("implement me")
 }
 
-func (s service) SendMessage(payload *entities.Payload) {
+func (s service) SendMessage(payload *map[string]string) {
 	allToken := s.tokenStore.All()
 	tokenCount := len(allToken)
 

@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"MessagingService/pkg/entities"
 	"MessagingService/pkg/message"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/websocket/v2"
@@ -30,7 +29,7 @@ func GetMessage(service message.Service) fiber.Handler {
 func SendMessage(service message.Service) fiber.Handler {
 	return func(ctx *fiber.Ctx) error {
 
-		payload := new(entities.Payload)
+		payload := new(map[string]string)
 		if err := ctx.BodyParser(&payload); err != nil {
 			return err
 		}
